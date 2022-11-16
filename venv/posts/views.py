@@ -5,16 +5,20 @@ from .models import Post
 
 # Create your views here.
 
+
 class PostIndex(ListView):
-    model = Post
-    template_name = 'posts\index.html'
+  model = Post
+  template_name = 'posts\index.html'
+  context_object_name = 'posts'
+
 
 class PostBusca(PostIndex):
-    pass
+  pass
+
 
 class PostCategoria(PostIndex):
-    pass
+  pass
+
 
 class PostDetalhes(UpdateView):
-    pass
-
+  pass
