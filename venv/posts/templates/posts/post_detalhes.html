@@ -33,7 +33,7 @@
     <div class="row pt-5">
         <div class="col-xl"></div>
         <div class="col-xl-8">
-            <h2 class="my-3">Comentários (1)</h2>
+            <h2 class="my-3">{{ post.comenta }}</h2>
             <h5 class="mb-2 mt-5">Luiz Otávio disse:</h5>
             <small class="text-muted">hoje</small>
             <p class="mb-1">
@@ -52,10 +52,12 @@
         <div class="col-xl-8">
             <h2 class="my-3">Deixe um comentário</h2>
             <form method="POST" action="#envia_comentario">
+                {% csrf_token %}
                 <table class="table">
                     {{ form }}
                     <tr>
                         <td colspan="2">
+                            {% include 'parciais\_messages.html' %}
                             <input
                                 id="envia_comentario"
                                 type="submit"
