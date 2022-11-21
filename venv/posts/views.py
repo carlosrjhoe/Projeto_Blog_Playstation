@@ -78,9 +78,8 @@ class PostDetalhes(UpdateView):
         contexto = super().get_context_data(**kwargs)
         post = self.get_object()
         comentarios = Comentario.objects.filter(publicado_comentario=True, post_comentario=post.id)
+        
         contexto['comentarios'] = comentarios
-        
-        
         return contexto
     
     def form_invalid(self, form):
@@ -94,4 +93,5 @@ class PostDetalhes(UpdateView):
 
         comentario.save()
         messages.success(self.request, 'Comentário enviado com sucesso!')
+        
         return redirect('post_detalhes', pk=post.id)
