@@ -9,7 +9,6 @@ from django.contrib import messages
 
 # Create your views here.
 
-
 class PostIndex(ListView):
     model = Post
     template_name = 'posts\index.html'
@@ -82,7 +81,7 @@ class PostDetalhes(UpdateView):
         contexto['comentarios'] = comentarios
         return contexto
     
-    def form_invalid(self, form):
+    def form_valid(self, form):
         post = self.get_object()
         comentario = Comentario(**form.cleaned_data)
         comentario.post_comentario = post

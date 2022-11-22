@@ -3,7 +3,6 @@ from .models import Comentario
 
 
 class FormComentario(ModelForm):
-
     def clean(self):
         """Validação de comentario do post"""
         data = self.cleaned_data
@@ -16,20 +15,6 @@ class FormComentario(ModelForm):
             self.add_error(
                 'nome_comentario',
                 'Nome precisa ter mais de 5 caracteres.'
-            )
-
-        if not comentario:
-            """Validação de comentário"""
-            self.add_error(
-                'comentario',
-                'Você não comentou.'
-            )
-            
-        if not email:
-            """Validação do email"""
-            self.add_error(
-                'email_comentario',
-                'E-mail não cadastrado, Obrigatório o cadastro do e-mail!'
             )
 
     class Meta:
