@@ -12,12 +12,14 @@ from django.contrib import messages
 class PostIndex(ListView):
     model = Post
     template_name = 'posts\index.html'
+    paginate_by = 6
     context_object_name = 'posts'
 
     def get_queryset(self):
         """Ordenar os post de forma invertida. Sempre o ultimo post será mostrado em 1º"""
         """(Q, Count, Case, When) Serve para contar a quantidade de comentarios"""
         qs = super().get_queryset()
+        qs = qs.select_related('categoria_post')
         qs = qs.order_by('-id').filter(publicado_post=True)
         qs = qs.annotate(
             numero_comentarios=Count(
@@ -71,26 +73,27 @@ class PostDetalhes(UpdateView):
     model = Post
     form_class = FormComentario
     context_object_name = 'post'
-    
+
     def get_context_data(self, **kwargs):
         """Injetando comentarios"""
         contexto = super().get_context_data(**kwargs)
         post = self.get_object()
-        comentarios = Comentario.objects.filter(publicado_comentario=True, post_comentario=post.id)
-        
+        comentarios = Comentario.objects.filter(
+            publicado_comentario=True, post_comentario=post.id)
+
         contexto['comentarios'] = comentarios
         return contexto
-    
+
     def form_valid(self, form):
         post = self.get_object()
         comentario = Comentario(**form.cleaned_data)
         comentario.post_comentario = post
-        
+
         if self.request.user.is_authenticated:
             """Verificação se login do usuário"""
             comentario.usuario_comentario = self.request.user
 
         comentario.save()
         messages.success(self.request, 'Comentário enviado com sucesso!')
-        
+
         return redirect('post_detalhes', pk=post.id)
